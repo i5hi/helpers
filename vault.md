@@ -1,7 +1,7 @@
 ## Secret Management with HashiCorp Vault on Debian 9-10: Part 1
 
 In this multi-part tutorial series, we will cover setup and management of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
-Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a basic production ready vault. In the next part, we will discuss alternative configurations and cover all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul```
+Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a basic production grade vault with minimal security considerations. In the next part, we will discuss alternative configurations and cover all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul``` for a production ready deployment.
 
 
 ## Introduction
@@ -33,7 +33,7 @@ Although the code can now be shared more freely, management of secrets is still 
 
 For a start, a system with multiple running services, usually run each service as their own user.
 
-This means multiple environment files to be maintained per user. This makes the difficulty of managing secrets double everytime a new service is added to the system.
+This means multiple environment files need to be maintained per user. This makes the difficulty of managing secrets *double* everytime a new service is added to the system.
 
 ***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
 
@@ -58,7 +58,7 @@ const response = request(options);
 const api_key = response.data.secret;
 ```
 
-Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets within vault. 
+Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets in Vault. 
 
 Now every service in our infrastructure can be assigned to a specific policy and have their own custom token with access to only the secrets concerning their application.
 
@@ -69,14 +69,14 @@ Basic knowledge in Linux and http is sufficient to follow this guide.
 You will require *ONE* of the following to test this setup:
 
 - Cloud server instance * Easiest method *
-- Vagrant * Preferred method * 
+- [Vagrant] (https://www.vagrantup.com/downloads) * Preferred method * 
 - Local Debian/Ubuntu setup  
 
 
 If you are using Vagrant to test this setup, you will have to do the following to correctly forward ports to use the Vault UI on your host browser.
 
 - use 0.0.0.0 instead of 127.0.0.1 in the vault.hcl file
-- use the Vagrantfile config provided below, to forward all networking to the host
+- use the Vagrantfile config provided below
 
 ```
 Vagrant.configure("2") do |config|
@@ -538,7 +538,7 @@ Try out the ui hosted at:
 http://127.0.0.1:8200/ui/
 ```
 
-
+All the steps covered in this tutorial can be done via the admin panel.
 
 #### Tips
 
