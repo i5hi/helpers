@@ -213,8 +213,7 @@ We will use the internal *raft* storage, which is easy to setup and scale.
 
 - *address* sets up the address on which requests to access secrets will be served.
 - *tls_disable* disables tls. 
-For the purpose of this tutorial, we will run vault on the same server as the application, therefore not requiring TLS just yet.
-We will implement TLS in Part 2 of the series.
+We will run vault on the localhost of the application, therefore not requiring TLS just yet.
 
 ***ui*** sets whether or not to host a frontend admin panel.
 
