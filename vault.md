@@ -10,7 +10,9 @@ Vault is a secret management tool which solves the problem of secret sprawl by c
 
 ### Secret Sprawl
 
-All applications use secrets, like database passwords or api keys.
+A secret is any bit of data considered sensitive, that will significantly cost a compnay, if made public.
+
+All applications use secrets, like database passwords or api keys. 
 
 The most common beginner practice is to store secrets as variables in the application.
 
