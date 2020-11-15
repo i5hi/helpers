@@ -509,7 +509,7 @@ In the final part, we will configure a HA cluster.
 Try out the ui hosted at:
 
 ```
-http://127.0.0.1:8200/ui
+http://127.0.0.1:8200/ui/
 ```
 
 #### Tips
