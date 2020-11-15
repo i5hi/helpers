@@ -52,7 +52,7 @@ api_key = request({
 
 ```
 
-The developer environment only needs a *single* `VAULT_TOKEN` to gain access to only the secrets required for their application to run.
+Now, the application environment only needs a *single* `VAULT_TOKEN` to gain access to only the secrets required for their application to run.
 
 
 
