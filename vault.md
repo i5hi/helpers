@@ -70,7 +70,7 @@ Add the Hashicorp releases to the apt repository
 $ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 ```
 
-Install vault
+Update apt and install vault
 
 ```
 $ sudo apt-get update && sudo apt-get install vault -y
@@ -152,7 +152,7 @@ Also notice:
 Requires=network-online.target
 After=network-online.target
 ```
-These directives ensure that vault only starts after the network is online. For our local setup, this is not required.
+These directives ensure that vault only starts after the network is online. For a local setup, this is not required.
 
 ### vault.hcl
 
@@ -231,7 +231,6 @@ Add the vault http address to the env for the client
 ```
 $ nano $HOME/.bashrc
 ```
-
 Paste the following on the last line
 ```
 export VAULT_ADDR=http://127.0.0.1:8200
@@ -248,7 +247,7 @@ Check server status:
 ```
 $ sudo systemctl status vault
 ```
-Systemd runs the vault server sub0command as the *vault* user.
+Systemd runs the server sub-command as the *vault* user.
 All subsequent client sub-commands can be run by any user that provides a valid token. 
 
 ## Initialize Vault
@@ -267,14 +266,14 @@ Unseal Key 3: xxxxxxxxxxxxxxxxxxxxxxxxxx-6qb6AlwbuPC4TbfLP
 Unseal Key 4: xxxxxxxxxxxxxxxxxxxxxxxxxx-MS6WIZqPJG78hW52m
 Unseal Key 5: xxxxxxxxxxxxxxxxxxxxxxxxxx-OJ2roXUPd1k6D62jN
 
-Initial Root Token: s.xxxxxxxxxxxxxxxxxxxxxxxxxxUM2fJ
+Initial Root Token: s.xxxxxxxxxxxxxxxxxxxxxxxxxx-UM2fJ
 ```
 
 Vault starts off in a sealed state. In this state nothing can be accessed from vault. 
 
 3/5 keys are required to unseal the vault. 
 
-Once the vault is unsealed, it remains unsealed unless a *seal* command is issued to lock it down.
+Once the vault is unsealed, it remains in this state until a *seal* command is issued to lock it down.
 
 The core of your operational security lies in how these keys are stored and managed. It is up to you to find the right balance of convenience and security. At the bare minimum, these keys should have atleast 1 reliable offline backup and should NOT be stored on the host machine.
 
@@ -300,7 +299,7 @@ HA Enabled         true
 
 ```
 
-Reissue the unseal command for 3/5 keys and you will see the value of `Sealed` change from `true` to `false`.  
+Reissue the unseal command for 3/5 keys and observe the value of `Sealed` change from `true` to `false`.  
 
 Now we can start using vault!
 
@@ -312,13 +311,22 @@ Login to vault using the root token.
 $ vault login
 ```
 
-### kv engine
+### Secrets engine
+
+The *secrets* sub-command allows us to configure vault's secret engine.
+
+Vault allows you to create and tune various different types of secrets engines. 
 
 We will be focussing only on the ***kv*** (key-value) secret engine, which stores a single *key=vaule* at a specific path.
 
 Vault reads and writes secrets to paths, which can be accessed as http endpoints. 
 
-For this example we have named the path msec/ and declared it to be of type *kv*
+In this example:
+
+the path ```msec/data``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/data```
+
+
+Enable the root path msec/ and declared it to be of type *kv*
 
 ```
 $ vault secrets enable -path=msec/ kv
@@ -329,9 +337,10 @@ Success! Enabled the kv secrets engine at: msec/
 
 ```
 
-### Store Secret
 
-The kv sub-command is used to interact with the kv secrets backend
+### Create secret
+
+The kv sub-command is used to interact with the *kv* secrets backend
 
 ```
 $ vault kv put msec/data secret=26i
@@ -344,7 +353,7 @@ Success! Data written to: msec/data
 
 ```
   
-### Access Secret
+#### Access secret
 
 ```
 $ vault kv get msec/data
@@ -362,9 +371,10 @@ secret      26i
 
 ### Policies
 
-A policy in vault allows us to define access control to secrets at specific paths.
+A policy in vault allows us to define access control to a secret path.
 
 So far we have performed all operations as the root user that we logged in as.
+
 It is good practice to use the root user to create/update/delete secrets and create application specific policies with limited permissions - usually only read.
 
 Navigate to the home directory and create a basic_policy.hcl file
@@ -416,7 +426,7 @@ Output:
 ```
 Key                  Value
 ---                  -----
-token                s.3Z2JLOmmv05Tlo19RBgoK1VR
+token                s.xxxxxxxxxxxxxxx-goK1VR
 token_accessor       KIePuV0opLqVjoQZNfbKMTAs
 token_duration       360h
 token_renewable      true
@@ -446,7 +456,7 @@ For this example we will use ***curl***
 *v1/$secret_path is suffixed to the api_addr*
 
 ```
-$ curl -X GET --header "X-Vault-Token: s.3Z2JLOmmv05Tlo19RBgoK1VR" http://127.0.0.1:8200/v1/msec/data 
+$ curl -X GET --header "X-Vault-Token: s.xxxxxxxxxxxxxxx-goK1VR" http://127.0.0.1:8200/v1/msec/data 
 
 ```
 Output:
@@ -476,7 +486,9 @@ http://127.0.0.1:8200/ui
 ```
 ### Further steps
 
-In the next series, we will take a deeper dive into vault admin commands and also setup vault as a standalone server with SSL.
+In the next part, we will look at alternative policies and a few hardening options.
+
+In the final part, we we run vault as a HA cluster.
 
 #### Tips
 
@@ -491,7 +503,7 @@ path "databases/*" {
 }
 ```
 
-We can now store many database secrets like so:
+Create credentials:
 
 ```
 vault kv put databases/mongo/username secret=vultr
