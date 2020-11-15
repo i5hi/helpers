@@ -18,7 +18,7 @@ The most common beginner practice is to store secrets as variables in the applic
 
 ```
 # Pseudo-code
-api_key="12039io120933iok312903iok12309piok12093piok12/9012i3ok12309io";
+api_key="FERobaedeDosOxpUXfTwyYq/7OxZB5";
 ```
 Although a convenient start, the developer is now restricted in their ability to share this code. Every copy of this code leads to copies of secrets being created across multiple devices. 
 
@@ -49,7 +49,7 @@ In our application, we can now access secrets at various http endpoints set by t
 ```
 # Pseudo-code
 api_key = request({
-  url: 'http://127.0.0.1:8200/v1/msec/data',
+  url: 'http://127.0.0.1:8200/v1/msec/api_key',
   method: 'GET',
   headers: {
       "X-Vault-Token":process.env.VAULT_TOKEN  
@@ -378,19 +378,19 @@ Success! Enabled the kv secrets engine at: msec/
 The kv sub-command is used to interact with the *kv* secrets backend
 
 ```
-$ vault kv put msec/data secret=26i
+$ vault kv put msec/api_key secret=FERobaedeDosOxpUXfTwyYq/7OxZB5
 ```
 
 Output:
   
 ```
-Success! Data written to: msec/data
+Success! Data written to: msec/api_key
 ```
   
 ### Access secret
 
 ```
-$ vault kv get msec/data
+$ vault kv get msec/api_key
 ```
 
 Output: 
@@ -399,7 +399,7 @@ Output:
 == Data ==
 Key    Value
 ---    -----
-secret      26i
+secret      FERobaedeDosOxpUXfTwyYq/7OxZB5
 
 ```
 
@@ -491,7 +491,7 @@ Finally, test vault's http client via ***curl***
 *v1/$secret_path is suffixed to the api_addr*
 
 ```
-$ curl -X GET --header "X-Vault-Token: s.xxxxxxxxxxxxxxx-goK1VR" http://127.0.0.1:8200/v1/msec/data 
+$ curl -X GET --header "X-Vault-Token: s.xxxxxxxxxxxxxxx-goK1VR" http://127.0.0.1:8200/v1/msec/api_key 
 
 ```
 
@@ -502,7 +502,7 @@ Output:
     "lease_id":"",
     "renewable":false,"lease_duration":2764800,
     "data":{
-        "secret":"26i"
+        "secret":"FERobaedeDosOxpUXfTwyYq/7OxZB5"
     },
     "wrap_info":null,
     "warnings":null,
