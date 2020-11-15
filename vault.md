@@ -364,6 +364,8 @@ the path ```msec/``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/
 
 Enable the root path msec/ and declare it to be of type *kv*
 
+*Note: it is easier to manage paths by using the application name as the root path, and name sub-paths to define an application specific secret*
+
 ```
 $ vault secrets enable -path=msec/ kv
 ```
@@ -531,26 +533,7 @@ All the steps covered in this tutorial can be done via the admin panel.
 
 #### Tips
 
-To keep things more organized you can create more explainatory paths, for example:
-  
-Consider this path to store all database related credentials
-  
-```
-path "databases/*" {
-  capabilities = ["read"]
-}
-```
-
-Create credentials:
-
-```
-vault kv put databases/mongo/username secret=vm
-vault kv put databases/mongo/password secret=shushhhhh
-vault kv put databases/sql/username secret=oddy
-vault kv put databases/sql/password secret=hushushhhh
-```
-
-It is recommended to use the same name for the kv secret *key*. Here we use *secret*. This allows unification in handling responses from the vault server as the secret value in the JSON object response will always be contained within `response.data.secret`
+It is easier to manage your secrets by using the same name for the kv secret *key*. In our example we have used *secret*. This allows unification in handling responses from the vault server as the secret value in the JSON object response will always be contained within `response.data.secret`.
 
 ### References
 
