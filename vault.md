@@ -1,23 +1,24 @@
 # Secret Management with HashiCorp Vault on Debian 9-10: Part 1
 
 In this multi-part tutorial series, we will cover setup and management of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
-Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a basic production grade server with minimal security considerations. In the next part, we will discuss alternative configurations and cover all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul``` for a production ready deployment.
+Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a production grade vault with minimal security considerations. In the next part, we will add hardening configurations and discuss all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul``` for a production ready deployment.
 
 
 ## Introduction
 
-Vault is a secret management tool which solves the problem of secret sprawl by centralizing the storage of secrets. 
+Vault is a *secret management tool* which solves the problem of secret sprawl by *centralizing the storage of secrets*. 
 
 ### Secret Sprawl
 
-A secret is any bit(s) of data, that if made public, will incur a significant cost to the owner.
+A *secret* is any bit(s) of data, that if made public, will incur a significant cost to the owner.
 
 All applications use secrets, like encryption keys, database passwords or api keys. 
 
 The most common beginner practice is to store secrets as variables in the application.
 
 ```
-const api_key="12039io120933iok312903iok12309piok12093piok12/9012i3ok12309io";
+# Pseudo-code
+api_key="12039io120933iok312903iok12309piok12093piok12/9012i3ok12309io";
 ```
 Although a convenient start, the developer is now restricted in their ability to share this code. Every copy of this code leads to copies of secrets being created across multiple devices. 
 
@@ -26,43 +27,39 @@ This is an example of secret sprawl; a side-effect of uncontrolled management of
 Environment variables are usually the next choice. They shift the responsibility of secret mangement from the developer to the system admin.
 
 ```
-const api_key=process.env.API_KEY;
+# Pseudo-code
+api_key=process.env.API_KEY;
 ```
 
 Although the code can now be shared more freely, management of secrets is still difficult for the admin; especially once the system gains complexity. 
 
 For a start, a system with multiple running services, usually run each service as their own user.
 
-This means multiple environment files need to be maintained per user. This makes the difficulty of managing secrets *double* everytime a new service is added to the system.
+This means multiple environment files need to be maintained per user. 
 
-Things start to get even more complicated ehrn the services get distributed.
+Things start to get even more complicated when the services get distributed.
 
 ***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
 
-Even fundamental to all other security features including encryption or auth methods.
 
 Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
-What we end up with in the application is something like this: 
+In our application, we can now access secrets at various http endpoints set by the admin
 
 ```
-# Calling vault like you would call any other HTTP API with request
-
-const options = {
+# Pseudo-code
+api_key = request({
   url: 'http://127.0.0.1:8200/v1/msec/data',
   method: 'GET',
   headers: {
       "X-Vault-Token":process.env.VAULT_TOKEN  
-  },
-};
+  }
+}).data.secret;
 
-const response = request(options);
-const api_key = response.data.secret;
 ```
 
-Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets in Vault. 
+Now each environment only needs a *single* `VAULT_TOKEN` stored in their environment in order to gain access to all the secrets required for their application to run.
 
-Now every service in our infrastructure can be assigned to a specific policy and have their own custom token, limiting their access to only the secrets concerning their application.
 
 ### Prerequisites
 
@@ -122,7 +119,7 @@ Update apt and install vault
 $ sudo apt-get update && sudo apt-get install vault -y
 ```
 
-The installation creates a vault:vault user:group and generates self-signed TLS certificates which we will use in the next part of the series. 
+The installation creates a vault:vault user:group and generates self-signed TLS certificates which we will use when we run vault as a standalone service. 
 
 Test the installation:
 
@@ -192,13 +189,6 @@ Observe the ExecStart value
 ```
 This is the command used to start the vault server.
 
-Also notice:
-```
-Requires=network-online.target
-After=network-online.target
-```
-These directives ensure that vault only starts after the network is online. For a local setup, this is not required.
-
 ### vault.hcl
 
 Vault uses the HCL format (similar to JSON) for its configuration files. 
@@ -248,12 +238,13 @@ We will run vault on the localhost of the application as a monolith, therefore n
 
 ***api_addr*** is the full address of where the vault api will be hosted.
 
-***cluster_addr*** is the address at which other nodes within the cluster communicate with this node to maintain consensus on the state of the secrets. *Only relavant for multi-node clusters.*
+***cluster_addr*** is the address at which other nodes within the cluster communicate with this node to maintain consensus on the state of the secrets. This will become relavant when we implment a multi-node cluster.
 
  
 ### Setup working directories and env
 
-Create a directory for raft storage. 
+Create a directory for raft storage. This is where all the secrets and internal state configurations are saved.
+
 ```
 $ sudo mkdir /opt/raft
 ```
@@ -275,11 +266,11 @@ Add the vault http address to the env for the client
 ```
 $ nano $HOME/.bashrc
 ```
-Paste the following on the last line
+
 ```
+# Paste into $HOME/.bashrc
 export VAULT_ADDR=http://127.0.0.1:8200
 ```
-
 
 
 ## Usage
@@ -296,10 +287,6 @@ Check server status:
 $ sudo systemctl status vault
 ```
 
-Systemd runs the server sub-command as the *vault* user.
-
-All subsequent client sub-commands can be run by any user that provides a valid token. 
-
 ### Initialize Vault
 
 ```
@@ -307,7 +294,7 @@ $ vault operator init
 ```
 operator init is run only once during initial setup. 
 
-The output of the operator init command will provide a fresh set of 5 unseal keys and a root token:
+Output:
 
 ```
 Unseal Key 1: xxxxxxxxxxxxxxxxxxxxxxxxxx-YDzQF/ydO1SiXFgQ8n
@@ -321,11 +308,11 @@ Initial Root Token: s.xxxxxxxxxxxxxxxxxxxxxxxxxx-UM2fJ
 
 Vault starts off in a sealed state. In this state nothing can be accessed from vault. 
 
-3/5 keys are required to unseal the vault. 
+3/5 Unseal Keys are required to unseal the vault. 
 
-Once the vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted.
+Once the vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted. 
 
-The core of your operational security lies in how these keys are stored and managed. It is up to you to find the right balance of convenience and security. At the bare minimum, these keys should have atleast 1 reliable offline backup and should NOT be stored on the host machine. 
+In the next part, we go into more detail on management of Unseal Keys and the Root Token. For now store these safely on your local machine (consider atleast password encrypting the file).
 
 Begin the unseal process :
 ```
@@ -370,7 +357,7 @@ We will be focussing only on the ***kv*** (key-value) secret engine, which store
 
 Vault reads and writes secrets to paths, which can be accessed as http endpoints. 
 
-In this example:
+For example:
 
 the path ```msec/``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/```
 
@@ -422,7 +409,7 @@ A policy in vault allows us to define access control to a secret path.
 
 So far we have performed all operations as the root user that we logged in as.
 
-It is good practice to use an admin user to create/update/delete secrets and create application specific user policies with limited permissions - usually only read.
+To give applications access to secrets, we need to create specific policies for each of them and define their `capabilities`. Based on these policies, we create custom tokens for each application.
 
 Create a basic_policy.hcl file in the home directory, or anywhere you wish to organize your policies. 
 
@@ -440,7 +427,7 @@ path "msec/*" {
 
 ***path*** defines the secret path for which we are applying permissions. Here we are creating a policy for the path msec/ and all sub-paths as indicated by the wildcard ' * '.
 
-***capabilities*** can include "create" , "update" , "delete", "list" or "sudo". 
+***capabilities*** can include "create" , "update" , "delete", "list" or "sudo". We have opted for a strict read-only policy.
 
 Then, write this policy file to vault.
 
@@ -529,7 +516,7 @@ The output JSON contains a field ***data*** with the key:value pair, with **secr
 
 Great! 
 
-In the next part we will cover Hashicorp's recommended hardening options, recovery and backups.
+In the next part we will cover Hashicorp's recommended hardening options.
 
 In the final part we will configure a HA cluster.
 
