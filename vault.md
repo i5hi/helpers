@@ -39,7 +39,7 @@ This means multiple environment files to be maintained per user. This makes the 
 
 Even fundamental to all other security features including encryption or auth methods.
 
-Vault is essentially an encrypted database, used just to store secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
+Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
 Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets within vault. 
 
