@@ -412,7 +412,7 @@ Then, from the same directory, run:
 ```
 $ vault policy write basic ./basic_policy.hcl
 ```
-This creates a policy named *basic* using the ./basic_policy.hcl file.
+This creates a policy named *basic* using the basic_policy.hcl file. 
 
 Output:
 ```
