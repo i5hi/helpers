@@ -529,9 +529,9 @@ The output JSON contains a field ***data*** with the key:value pair, with **secr
 
 Great! 
 
-In the next part will cover hardening options, .
+In the next part we will cover Hashicorp's recommended hardening options.
 
-In the final part, we will configure a HA cluster.
+In the final part we will configure a HA cluster.
 
 ### Further steps
 
