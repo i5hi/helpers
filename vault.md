@@ -2,22 +2,22 @@ In this multi-part tutorial series, we will cover setup and management HashiCort
 
 ## Introduction
 
-Vault is a secret management tool which solves the problem of secret sprawl, by centralizing the storage of secrets. 
+Vault is a secret management tool which solves the problem of secret sprawl by centralizing the storage of secrets. 
 
 #### What is secret sprawl?
 
 All applications use secrets, like database passwords or api keys.
 
-The most common beginner practice is to store these as variables in the application.
+The most common beginner practice is to store secrets as variables in the application.
 
 ```
 const api_key="12039io120933iok312903iok12309piok12093piok12/9012i3ok12309io";
 ```
-Although a convenient start, this leads to sensitive data being shared across respositories and downloaded on multiple developer machines. This leads to copies of secrets being created across multiple devices. 
+Although a convenient start, this practice leads to sensitive data being shared across respositories and downloaded on multiple developer machines. This leads to copies of secrets being created across multiple devices. 
 
-This is what secret sprawl is; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets has long term consequences.
+This is an example of secret sprawl; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets has long term consequences.
 
-Environment variables are a step better. It shifts the responsibility of secret mangement from the developer to the system admin.
+Environment variables are a step better. They shifts the responsibility of secret mangement from the developer to the system admin.
 
 ```
 const api_key=process.env.API_KEY;
@@ -25,7 +25,7 @@ const api_key=process.env.API_KEY;
 
 Although the code can now be shared more freely, management of secrets is still difficult for the admin; especially once the system gains complexity. 
 
-Vault is essentially an encrypted database, used just to store secrets. Similar to other database programs it has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
+Vault is essentially an encrypted database, used just to store secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
 Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets within vault. 
 
@@ -236,7 +236,11 @@ Paste the following on the last line
 export VAULT_ADDR=http://127.0.0.1:8200
 ```
 
-## Start Server 
+
+
+## Usage
+
+### Start Server 
 
 ```
 $ sudo systemctl enable vault
@@ -250,7 +254,7 @@ $ sudo systemctl status vault
 Systemd runs the server sub-command as the *vault* user.
 All subsequent client sub-commands can be run by any user that provides a valid token. 
 
-## Initialize Vault
+### Initialize Vault
 
 ```
 $ vault operator init
@@ -303,7 +307,7 @@ Reissue the unseal command for 3/5 keys and observe the value of `Sealed` change
 
 Now we can start using vault!
 
-## Usage
+### Login
 
 Login to vault using the root token.
 
