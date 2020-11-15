@@ -400,7 +400,7 @@ Output:
 Success! Data written to: msec/data
 ```
   
-#### Access secret
+### Access secret
 
 ```
 $ vault kv get msec/data
