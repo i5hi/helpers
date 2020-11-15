@@ -69,7 +69,7 @@ Basic knowledge in Linux and http is sufficient to follow this guide.
 You will require *ONE* of the following to test this setup:
 
 - Cloud server instance * Easiest method *
-- [Vagrant](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index) * Preferred method * 
+- [Vagrant w/VirtualBox](https://learn.hashicorp.com/tutorials/vagrant/getting-started-index) * Preferred method * 
 - Local Debian/Ubuntu setup  
 
 
