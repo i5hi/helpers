@@ -458,6 +458,7 @@ policies             ["basic"]
 
 ```
 
+*policy* requires a policy name for which to create a token
 
 *no-default-policy* ensures that the token is only for the basic policy and not the *default* policy. 
 
@@ -469,9 +470,7 @@ Expired tokens return a 403 Error, so keep in mind that your application will ha
   
 ## Test
 
-Finally, lets attempt requesting vault for a secret via http.
-
-For this example we will use ***curl***
+Finally, test vault's http client via ***curl***
 
 *Change the X-Vault-Token value to the token you just created*
 
@@ -499,18 +498,19 @@ The output JSON contains a field ***data*** with the key:value pair, with **secr
  
 ## Conclusion
 
-Great! Now that you have a vault server running in production mode, hardening and customising it to suit your needs is the next step. 
+Great! 
+
+In the next part will cover alternative policies and a few hardening options.
+
+In the final part, we will configure a HA cluster.
+
+### Further steps
 
 Try out the ui hosted at:
 
 ```
 http://127.0.0.1:8200/ui
 ```
-### Further steps
-
-In the next part, we will look at alternative policies and a few hardening options.
-
-In the final part, we we run vault as a HA cluster.
 
 #### Tips
 
