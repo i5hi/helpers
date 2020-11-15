@@ -147,6 +147,12 @@ Observe the ExecStart value
 ```
 This is the command used to start the vault server.
 
+Also notice:
+```
+Requires=network-online.target
+After=network-online.target
+```
+These directives ensure that vault only starts after the network is online. For our local setup, this is not required.
 
 ### vault.hcl
 
@@ -236,12 +242,14 @@ export VAULT_ADDR=http://127.0.0.1:8200
 ```
 $ sudo systemctl enable vault
 $ sudo systemctl start  vault
-$ sudo systemctl status vault
 ```
 
-This starts the vault server as user *vault*
-
-All subsequent client commands can be run by any user that provides a valid token. 
+Check server status:
+```
+$ sudo systemctl status vault
+```
+Systemd runs the vault server sub0command as the *vault* user.
+All subsequent client sub-commands can be run by any user that provides a valid token. 
 
 ## Initialize Vault
 
@@ -253,13 +261,13 @@ operator init is run only once during initial setup.
 The output of the operator init command will provide a fresh set of 5 unseal keys and a root token:
 
 ```
-Unseal Key 1: 2ergxtANXHEO1NeJdWrx0Ga6Y+YDzQF/ydO1SiXFgQ8n
-Unseal Key 2: Z2YBK9bQul1/k8qEj6GLOg/+p3vMzSWY2M6b3pWDfqG2
-Unseal Key 3: LLDvBMT6WR492UwQX9hHJrmcQQT6qb6AlwbuPC4TbfLP
-Unseal Key 4: hYnOMtV3WzWCV8Iq8lq7Hq8hz+7MS6WIZqPJG78hW52m
-Unseal Key 5: 7O9Tn7tRKO/S4BxDcmc5WVmn0N6OJ2roXUPd1k6D62jN
+Unseal Key 1: xxxxxxxxxxxxxxxxxxxxxxxxxx-YDzQF/ydO1SiXFgQ8n
+Unseal Key 2: xxxxxxxxxxxxxxxxxxxxxxxxxx-MzSWY2M6b3pWDfqG2
+Unseal Key 3: xxxxxxxxxxxxxxxxxxxxxxxxxx-6qb6AlwbuPC4TbfLP
+Unseal Key 4: xxxxxxxxxxxxxxxxxxxxxxxxxx-MS6WIZqPJG78hW52m
+Unseal Key 5: xxxxxxxxxxxxxxxxxxxxxxxxxx-OJ2roXUPd1k6D62jN
 
-Initial Root Token: s.APkXJpYSHXpMQQ9vhNiUM2fJ
+Initial Root Token: s.xxxxxxxxxxxxxxxxxxxxxxxxxxUM2fJ
 ```
 
 Vault starts off in a sealed state. In this state nothing can be accessed from vault. 
