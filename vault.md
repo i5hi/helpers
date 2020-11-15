@@ -31,10 +31,9 @@ const api_key=process.env.API_KEY;
 
 Although the code can now be shared more freely, management of secrets is still difficult for the admin; especially once the system gains complexity. 
 
-For a start 
-- a system with multiple running services, usually run each service as their own users. This means multiple environment files to be maintained per user. 
-- updating secrets becomes difficult
-- backing up secrets becomes difficult
+For a start, a system with multiple running services, usually run each service as their own user.
+
+This means multiple environment files to be maintained per user. This makes the difficulty of managing secrets double everytime a new service is added to the system.
 
 ***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
 
