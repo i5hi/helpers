@@ -118,7 +118,6 @@ Update apt and install vault
 
 ```
 $ sudo apt-get update && sudo apt-get install vault -y
-
 ```
 
 The installation creates a vault:vault user:group and generates self-signed TLS certificates which we will use in the next part of the series. 
@@ -343,7 +342,6 @@ Unseal Progress    1/3
 Unseal Nonce       1be94049-ffb4-b9c4-6ac6-065f8af3cf6a
 Version            1.5.5
 HA Enabled         true
-
 ```
 
 Reissue the unseal command for 3/5 keys and observe the value of `Sealed` change from `true` to `false`.  
@@ -381,7 +379,6 @@ $ vault secrets enable -path=msec/ kv
 Output: 
 ```
 Success! Enabled the kv secrets engine at: msec/
-
 ```
 
 
@@ -397,7 +394,6 @@ Output:
   
 ```
 Success! Data written to: msec/data
-
 ```
   
 #### Access secret
