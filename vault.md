@@ -288,6 +288,8 @@ Once the vault is unsealed, it remains in this state until a *seal* command is i
 
 The core of your operational security lies in how these keys are stored and managed. It is up to you to find the right balance of convenience and security. At the bare minimum, these keys should have atleast 1 reliable offline backup and should NOT be stored on the host machine.
 
+HashiCorp recommends complete destruction of the root token after initial setup of users and auth methods. This will be covered in the next part of the series.
+
 Begin the unseal process :
 ```
 $ vault operator unseal
@@ -386,7 +388,7 @@ A policy in vault allows us to define access control to a secret path.
 
 So far we have performed all operations as the root user that we logged in as.
 
-It is good practice to use the root user to create/update/delete secrets and create application specific policies with limited permissions - usually only read.
+It is good practice to use an admin user to create/update/delete secrets and create application specific user policies with limited permissions - usually only read.
 
 Navigate to the home directory and create a basic_policy.hcl file
 
