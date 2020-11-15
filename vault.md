@@ -1,10 +1,13 @@
-In this multi-part tutorial series, we will cover setup and management HashiCortp Vault on Debian 9/10 (and Ubuntu 18/19/20).  Part 1 covers basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a production ready vault with minimal hardening to start and add security features based on our infrastructural requirements.
+## Secret Management with HashiCorp Vault on Debian 9-10: Part 1
+
+In this multi-part tutorial series, we will cover setup and management of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
+Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a production ready vault with minimal hardening. We will then handpick security features based on our infrastructural requirements.
 
 ## Introduction
 
 Vault is a secret management tool which solves the problem of secret sprawl by centralizing the storage of secrets. 
 
-#### What is secret sprawl?
+### Secret Sprawl
 
 All applications use secrets, like database passwords or api keys.
 
@@ -44,19 +47,23 @@ const response = request(options);
 const api_key = response.data.secret;
 ```
 
-## Prerequisites
+### Prerequisites
 
-A Linux beginner can follow along this tutorial.
+Basic knowledge in the following areas is sufficient to follow along this guide:
 
-## Dependencies
+1. Linux (Debian/Ubuntu) 
+2. HTTP Service Development
+3. SQL/NoSQL Databases 
+
+## Installation
+
+### Dependencies
 
 Debian will require a few dependencies to get started. These dependencies should already be present on Ubuntu.
 
 ```
 $ sudo apt-get install software-properties-common gpg curl -y
 ```
-
-## Installation
 
 Add Hashicorp's PGP Key to apt
 
