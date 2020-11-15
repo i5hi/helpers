@@ -64,11 +64,7 @@ Now every service in our infrastructure can be assigned to a specific policy and
 
 ### Prerequisites
 
-Basic knowledge in the following areas is sufficient to follow along this guide:
-
-1. Linux (Debian/Ubuntu) 
-2. HTTP Service Development
-3. SQL/NoSQL Databases 
+Basic knowledge in Linux and http is sufficient to follow this guide.
 
 ## Installation
 
