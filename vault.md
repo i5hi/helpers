@@ -344,7 +344,7 @@ Vault reads and writes secrets to paths, which can be accessed as http endpoints
 
 In this example:
 
-the path ```msec/data``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/data```
+the path ```msec/``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/```
 
 
 Enable the root path msec/ and declared it to be of type *kv*
