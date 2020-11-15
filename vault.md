@@ -66,6 +66,12 @@ Now every service in our infrastructure can be assigned to a specific policy and
 
 Basic knowledge in Linux and http is sufficient to follow this guide.
 
+You will require *ONE* of the following to test this setup:
+
+- Cloud server instance
+- Vagrant * Prefered method * 
+- Local Debian/Ubuntu setup
+
 ## Installation
 
 ### Dependencies
@@ -511,6 +517,26 @@ Try out the ui hosted at:
 ```
 http://127.0.0.1:8200/ui/
 ```
+
+If you are using vagrant to test this setup, you will have to 
+- use 0.0.0.0 instead of 127.0.0.1 in all the vault.hcl file
+- use the Vagrantfile config provided below, to forward all networking to the host
+
+
+```
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/buster64"
+   config.vm.network "forwarded_port", guest: 8200, host: 8200, protocol: "tcp"
+
+  config.vm.provider :virtualbox do |vb|
+	vb.memory = 1024
+	vb.cpus = 1
+  end
+end
+
+
+```
+
 
 #### Tips
 
