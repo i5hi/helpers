@@ -22,25 +22,19 @@ api_key="FERobaedeDosOxpUXfTwyYq/7OxZB5";
 ```
 Although a convenient start, the developer is now restricted in their ability to share this code. Every copy of this code leads to copies of secrets being created across multiple devices. 
 
-This is an example of secret sprawl; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets has long term consequences.
+This is an example of secret sprawl; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets have a compounding effect.
 
-Environment variables are usually the next choice. They shift the responsibility of secret mangement from the developer to the system admin.
+Environment variables are usually the next best choice. They shift the responsibility of secret mangement from the developer to the system admin.
 
 ```
 # Pseudo-code
 api_key=process.env.API_KEY;
 ```
 
-Although the code can now be shared more freely, management of secrets is still difficult for the admin; especially once the system gains complexity. 
+Although the code can now be more freely shared, management of secrets is still difficult for the admin; especially once the system gains complexity. 
 
-For a start, a system with multiple running services, usually run each service as their own user.
-
-This means multiple environment files need to be maintained per user. 
-
-Things start to get even more complicated when the services get distributed.
 
 ***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
-
 
 Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
@@ -58,7 +52,8 @@ api_key = request({
 
 ```
 
-Now each environment only needs a *single* `VAULT_TOKEN` stored in their environment in order to gain access to all the secrets required for their application to run.
+The developer environment only needs a *single* `VAULT_TOKEN` to gain access to only the secrets required for their application to run.
+
 
 
 ### Prerequisites
