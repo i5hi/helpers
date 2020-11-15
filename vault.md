@@ -545,7 +545,6 @@ Consider this path to store all database related credentials
 ```
 path "databases/*" {
   capabilities = ["read"]
-  
 }
 ```
 
