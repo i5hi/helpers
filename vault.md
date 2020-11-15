@@ -557,9 +557,9 @@ path "databases/*" {
 Create credentials:
 
 ```
-vault kv put databases/mongo/username secret=vultr
+vault kv put databases/mongo/username secret=vm
 vault kv put databases/mongo/password secret=shushhhhh
-vault kv put databases/sql/username secret=vultr
+vault kv put databases/sql/username secret=oddy
 vault kv put databases/sql/password secret=hushushhhh
 ```
 
