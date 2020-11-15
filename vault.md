@@ -1,7 +1,8 @@
 ## Secret Management with HashiCorp Vault on Debian 9-10: Part 1
 
 In this multi-part tutorial series, we will cover setup and management of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
-Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a production ready vault with minimal hardening. We will then handpick security features based on our infrastructural requirements.
+Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a basic production ready vault. In the next part, we will discuss alternative configurations and cover all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul```
+
 
 ## Introduction
 
@@ -16,17 +17,26 @@ The most common beginner practice is to store secrets as variables in the applic
 ```
 const api_key="12039io120933iok312903iok12309piok12093piok12/9012i3ok12309io";
 ```
-Although a convenient start, this practice leads to sensitive data being shared across respositories and downloaded on multiple developer machines. This leads to copies of secrets being created across multiple devices. 
+Although a convenient start, the developer is now restricted in their ability to share code. Every copy of this code base leads to copies of secrets being created across multiple devices. 
 
 This is an example of secret sprawl; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets has long term consequences.
 
-Environment variables are a step better. They shifts the responsibility of secret mangement from the developer to the system admin.
+Environment variables are usually the next choice. They shifts the responsibility of secret mangement from the developer to the system admin.
 
 ```
 const api_key=process.env.API_KEY;
 ```
 
 Although the code can now be shared more freely, management of secrets is still difficult for the admin; especially once the system gains complexity. 
+
+For a start 
+- a system with multiple running services, usually run each service as their own users. This means multiple environment files to be maintained per user. 
+- updating secrets becomes difficult
+- backing up secrets becomes difficult
+
+***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
+
+Even fundamental to all other security features including encryption or auth methods.
 
 Vault is essentially an encrypted database, used just to store secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
@@ -35,6 +45,8 @@ Rather than storing *ALL* secrets within our system env, we will only store a *s
 What we end up with in the application is something like this: 
 
 ```
+# Calling vault like you would call any other HTTP API with request
+
 const options = {
   url: 'http://127.0.0.1:8200/v1/msec/data',
   method: 'GET',
@@ -46,6 +58,7 @@ const options = {
 const response = request(options);
 const api_key = response.data.secret;
 ```
+
 
 ### Prerequisites
 
@@ -286,9 +299,7 @@ Vault starts off in a sealed state. In this state nothing can be accessed from v
 
 Once the vault is unsealed, it remains in this state until a *seal* command is issued to lock it down.
 
-The core of your operational security lies in how these keys are stored and managed. It is up to you to find the right balance of convenience and security. At the bare minimum, these keys should have atleast 1 reliable offline backup and should NOT be stored on the host machine.
-
-HashiCorp recommends complete destruction of the root token after initial setup of users and auth methods. This will be covered in the next part of the series.
+The core of your operational security lies in how these keys are stored and managed. It is up to you to find the right balance of convenience and security. At the bare minimum, these keys should have atleast 1 reliable offline backup and should NOT be stored on the host machine. 
 
 Begin the unseal process :
 ```
