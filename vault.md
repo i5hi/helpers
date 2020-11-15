@@ -35,6 +35,8 @@ For a start, a system with multiple running services, usually run each service a
 
 This means multiple environment files need to be maintained per user. This makes the difficulty of managing secrets *double* everytime a new service is added to the system.
 
+Things start to get even more complicated ehrn the services get distributed.
+
 ***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
 
 Even fundamental to all other security features including encryption or auth methods.
@@ -60,7 +62,7 @@ const api_key = response.data.secret;
 
 Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets in Vault. 
 
-Now every service in our infrastructure can be assigned to a specific policy and have their own custom token with access to only the secrets concerning their application.
+Now every service in our infrastructure can be assigned to a specific policy and have their own custom token, limiting their access to only the secrets concerning their application.
 
 ### Prerequisites
 
@@ -238,7 +240,7 @@ We will use the internal *raft* storage, which is easy to setup and scale.
 
 - *address* sets up the address on which requests to access secrets will be served.
 - *tls_disable* disables tls. 
-We will run vault on the localhost of the application, therefore not requiring TLS just yet.
+We will run vault on the localhost of the application as a monolith, therefore not requiring TLS just yet.
 
 ***ui*** sets whether or not to host a frontend admin panel.
 
@@ -293,7 +295,9 @@ Check server status:
 ```
 $ sudo systemctl status vault
 ```
+
 Systemd runs the server sub-command as the *vault* user.
+
 All subsequent client sub-commands can be run by any user that provides a valid token. 
 
 ### Initialize Vault
@@ -371,7 +375,7 @@ In this example:
 the path ```msec/``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/```
 
 
-Enable the root path msec/ and declared it to be of type *kv*
+Enable the root path msec/ and declare it to be of type *kv*
 
 ```
 $ vault secrets enable -path=msec/ kv
@@ -420,11 +424,10 @@ So far we have performed all operations as the root user that we logged in as.
 
 It is good practice to use an admin user to create/update/delete secrets and create application specific user policies with limited permissions - usually only read.
 
-Navigate to the home directory and create a basic_policy.hcl file
+Create a basic_policy.hcl file in the home directory, or anywhere you wish to organize your policies. 
 
 ```
-$ cd $HOME
-$ nano basic_policy.hcl
+$ nano $HOME/basic_policy.hcl
 ```
 
 Copy the following policy into the file.
@@ -435,22 +438,21 @@ path "msec/*" {
 }
 ```
 
-***path*** defines the secret path for which we are applying permissions. Here we are creating a policy for the path msec/ and all sub-paths as indicated by the wildcard *.
+***path*** defines the secret path for which we are applying permissions. Here we are creating a policy for the path msec/ and all sub-paths as indicated by the wildcard ' * '.
 
 ***capabilities*** can include "create" , "update" , "delete", "list" or "sudo". 
 
-Then, from the same directory, run:
+Then, write this policy file to vault.
 
 ```
-$ vault policy write basic ./basic_policy.hcl
+$ vault policy write basic $HOME/basic_policy.hcl
 ```
-This creates a policy named ***basic*** using the basic_policy.hcl file. 
-
-
 Output:
 ```
 Success! Uploaded policy: basic
 ```
+
+This creates a policy named ***basic*** using the basic_policy.hcl file. 
 
 Confirm the policy by reading it.
 ```
@@ -482,14 +484,17 @@ policies             ["basic"]
 
 *policy* requires a policy name for which to create a token
 
-*no-default-policy* ensures that the token is only for the basic policy and not the *default* policy. 
+
+*no-default-policy* ensures that the token is only for the specified policy and not the *default* policy. 
 
 The default policy has additional permissions that we do not want to give our application; so ***REMEMBER*** to always add this flag!
+
 
 *ttl* (time to live) sets the time for which this token will be valid. The default value is 765h,  which is also the maximum. 
 
 Expired tokens return a 403 Error, so keep in mind that your application will have to update its token within this timeframe to avoid downtime.
   
+
 ## Test
 
 Finally, test vault's http client via ***curl***
@@ -502,6 +507,7 @@ Finally, test vault's http client via ***curl***
 $ curl -X GET --header "X-Vault-Token: s.xxxxxxxxxxxxxxx-goK1VR" http://127.0.0.1:8200/v1/msec/data 
 
 ```
+
 Output:
 ```
 {
@@ -516,20 +522,20 @@ Output:
     "auth":null
 }
 ```
+
 The output JSON contains a field ***data*** with the key:value pair, with **secret** as the key.
  
 ## Conclusion
 
 Great! 
 
-In the next part will cover alternative policies and hardening options.
+In the next part will cover hardening options, backup and recovery.
 
 In the final part, we will configure a HA cluster.
 
 ### Further steps
 
 Try out the ui hosted at:
-
 ```
 http://127.0.0.1:8200/ui/
 ```
