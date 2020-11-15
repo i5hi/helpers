@@ -12,7 +12,7 @@ Vault is a secret management tool which solves the problem of secret sprawl by c
 
 A secret is any bit(s) of data, that if made public, will incur a significant cost to the owner.
 
-All applications use secrets, like database passwords or api keys. 
+All applications use secrets, like encryption keys, database passwords or api keys. 
 
 The most common beginner practice is to store secrets as variables in the application.
 
