@@ -41,8 +41,6 @@ Even fundamental to all other security features including encryption or auth met
 
 Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
-Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets within vault. 
-
 What we end up with in the application is something like this: 
 
 ```
@@ -60,6 +58,9 @@ const response = request(options);
 const api_key = response.data.secret;
 ```
 
+Rather than storing *ALL* secrets within our system env, we will only store a *single* vault token and manage all secrets within vault. 
+
+Now every service in our infrastructure can be assigned to a specific policy and have their own custom token with access to only the secrets concerning their application.
 
 ### Prerequisites
 
