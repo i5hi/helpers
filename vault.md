@@ -21,7 +21,7 @@ Although a convenient start, the developer is now restricted in their ability to
 
 This is an example of secret sprawl; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets has long term consequences.
 
-Environment variables are usually the next choice. They shifts the responsibility of secret mangement from the developer to the system admin.
+Environment variables are usually the next choice. They shift the responsibility of secret mangement from the developer to the system admin.
 
 ```
 const api_key=process.env.API_KEY;
