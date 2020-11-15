@@ -526,7 +526,7 @@ The output JSON contains a field ***data*** with the key:value pair, with **secr
 
 Great! 
 
-In the next part will cover alternative policies and a few hardening options.
+In the next part will cover alternative policies and hardening options.
 
 In the final part, we will configure a HA cluster.
 
