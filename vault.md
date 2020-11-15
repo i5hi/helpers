@@ -323,7 +323,7 @@ Vault starts off in a sealed state. In this state nothing can be accessed from v
 
 3/5 keys are required to unseal the vault. 
 
-Once the vault is unsealed, it remains in this state until a *seal* command is issued to lock it down.
+Once the vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted.
 
 The core of your operational security lies in how these keys are stored and managed. It is up to you to find the right balance of convenience and security. At the bare minimum, these keys should have atleast 1 reliable offline backup and should NOT be stored on the host machine. 
 
@@ -529,7 +529,7 @@ The output JSON contains a field ***data*** with the key:value pair, with **secr
 
 Great! 
 
-In the next part will cover hardening options, backup and recovery.
+In the next part will cover hardening options, .
 
 In the final part, we will configure a HA cluster.
 
