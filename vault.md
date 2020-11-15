@@ -17,7 +17,7 @@ The most common beginner practice is to store secrets as variables in the applic
 ```
 const api_key="12039io120933iok312903iok12309piok12093piok12/9012i3ok12309io";
 ```
-Although a convenient start, the developer is now restricted in their ability to share this code. Every copy of this code base leads to copies of secrets being created across multiple devices. 
+Although a convenient start, the developer is now restricted in their ability to share this code. Every copy of this code leads to copies of secrets being created across multiple devices. 
 
 This is an example of secret sprawl; a side-effect of uncontrolled management of secrets. For any organization dealing with even fairly sensitive data, this slow leak of secrets has long term consequences.
 
