@@ -307,7 +307,7 @@ Vault starts off in a sealed state. In this state nothing can be accessed from v
 
 Once the vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted. 
 
-In the next part, we go into more detail on management of Unseal Keys and the Root Token. For now store these safely on your local machine (consider atleast password encrypting the file).
+In the next part, we go into more detail on management of Unseal Keys and the Root Token. For now store these safely on your local machine.
 
 Begin the unseal process :
 ```
