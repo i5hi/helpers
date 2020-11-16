@@ -56,7 +56,6 @@ api_key = request({
 Now, the application environment only needs a *single* `VAULT_TOKEN` to gain access to only the secrets required for their application to run.
 
 
-
 ### Prerequisites
 
 Basic knowledge in Linux and http is sufficient to follow this guide.
