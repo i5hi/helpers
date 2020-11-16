@@ -1,7 +1,8 @@
 # Secret Management with HashiCorp Vault on Debian 9-10: Part 1
 
-In this multi-part tutorial series, we will cover setup and management of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
-Part 1 will cover basic setup and usage of vault. Rather than using vault in dev mode, we will deploy a production grade vault with minimal security considerations. In the next part, we will add hardening configurations and discuss all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul``` for a production ready deployment.
+Part 1 covers basic setup and admin of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
+
+Rather than using vault in dev mode, we will deploy a production grade vault with minimal security considerations. In the next part, we will add hardening configurations and discuss all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul``` for a production ready deployment.
 
 
 ## Introduction
