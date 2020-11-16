@@ -528,7 +528,7 @@ All the steps covered in this tutorial can be done via the admin panel.
 
 #### Tips
 
-It is easier to manage your secrets by using the same name for the kv secret *key*. In our example we have used *secret*. This allows unification in handling responses from the vault server as the secret value in the JSON object response will always be contained within `response.data.secret`.
+It is easier to manage your secrets by using the same name for the kv secret's *key*. In our example we have used `secret`. This allows unification in handling responses from the vault server as the secret's value in the JSON object response will always be contained within `response.data.secret`.
 
 ### References
 
