@@ -2,7 +2,7 @@
 
 Part 1 covers basic setup and admin of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
 
-We will deploy a production grade vault with minimal security considerations to get started. In the next part, we will take a deeper dive into security concepts and add hardening configurations based on recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul```.
+We will deploy a production grade Vault server with minimal security considerations to get started. In the next part, we will take a deeper dive into security concepts and add hardening configurations based on recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul```.
 
 
 ## Introduction
@@ -37,9 +37,9 @@ Although the code can now be more freely shared, management of secrets is still 
 
 ***Being able to manage all your mission-critical secrets from one place is the primary use-case of Vault.***
 
-Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
+Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the Vault server.
 
-In our application, we can now access secrets at various http endpoints set by the vault admin
+In our application, we can now access secrets at various http endpoints set by the Vault admin
 
 ```
 # Pseudo-code
@@ -123,7 +123,7 @@ $ vault
 
 ### systemd
 
-systemd is the recommended way to start and keep the vault server runing as a daemon process. 
+systemd is the recommended way to start and keep ```vault server``` runing as a daemon process. 
 
 #### Unit File
 
@@ -210,7 +210,7 @@ cluster_addr = "http://127.0.0.1:8201"
 
 ```
 
-***storage*** chooses the storage backend used by vault to store secrets. 
+***storage*** chooses the storage backend used by Vault to store secrets. 
 Each storage type has trade-offs. 
 We will use the internal *raft* storage, which is easy to setup and scale.   
 
@@ -218,17 +218,17 @@ We will use the internal *raft* storage, which is easy to setup and scale.
 
 - *node_id* can be any name given to this node. This becomes more relavant when more nodes are added to the network.
 
-***listener***  chooses the type of communication protocol. We will be using the tcp protocol to access vault via an http endpoint.
+***listener***  chooses the type of communication protocol. We will be using the tcp protocol to access Vault via an http endpoint.
 
 - *address* sets up the address on which requests to access secrets will be served.
 - *tls_disable* disables tls. 
-We will run vault on the localhost of the application as a monolith, therefore not requiring TLS just yet.
+We will run Vault on the localhost of the application as a monolith, therefore not requiring TLS just yet.
 
 ***ui*** sets whether or not to host a frontend admin panel.
 
 ***disable_mlock*** is set to false by default but recommended by hashicorp to be set to true for integrated storage.
 
-***api_addr*** is the full address of where the vault api will be hosted.
+***api_addr*** is the full address of where the Vault api will be hosted.
 
 ***cluster_addr*** is the address at which other nodes within the cluster communicate with this node to maintain consensus on the state of the secrets. This will become relavant when we implment a multi-node cluster.
 
@@ -253,7 +253,7 @@ Give the vault binary the ability to use the mlock syscall without running the p
 $ sudo setcap cap_ipc_lock=+ep /usr/bin/vault
 ```
 
-Add the vault http address to the env for the client
+Add Vault's http address to the env for the client
 
 ```
 $ nano $HOME/.bashrc
@@ -300,9 +300,9 @@ Initial Root Token: s.xxxxxxxxxxxxxxxxxxxxxxxxxx-UM2fJ
 
 Vault starts in a sealed state. In this state nothing can be accessed from vault. 
 
-3/5 Unseal Keys are required to unseal the vault. 
+3/5 Unseal Keys are required to unseal the Vault. 
 
-Once the vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted. 
+Once the Vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted. 
 
 In the next part, we go into more detail on management of Unseal Keys and the Root Token. 
 For now store them safely on your local working machine.
@@ -334,7 +334,7 @@ Now we can start using vault!
 
 ### Login
 
-Login to vault using the Root Token.
+Login to Vault using the Root Token.
 
 ```
 $ vault login
@@ -342,7 +342,7 @@ $ vault login
 
 ### Secrets engine
 
-The *secrets* sub-command allows us to configure vault's secret engine.
+The *secrets* sub-command allows us to configure Vault's secret engine.
 
 In Vault, a secret engine is simply a technique of managing and storing a specific type of secret. 
 
@@ -434,7 +434,7 @@ path "msec/*" {
 
 ***capabilities*** can include "create" , "update" , "delete", "list" or "sudo". We have opted for a strict read-only policy.
 
-Then, write this policy file to vault.
+Then, write this policy file to Vault.
 
 ```
 $ vault policy write basic $HOME/basic_policy.hcl
@@ -492,7 +492,7 @@ The *token* s.xxxxxxxxxxxxxxx-goK1VR can now be shared with a developer of the m
 
 All secrets related to this application can easily be managed by the admin at the msec/* secret path.
 
-Finally, test the token using vault's http client via ***curl***
+Finally, test the token using Vault's http client via ***curl***
 
 *Change the X-Vault-Token value to the token you just created*
 
@@ -520,7 +520,7 @@ Output:
 
 The output JSON contains a field ***data*** with the key:value pair, with **secret** as the key.
  
-*Tip: It is easier to manage your secrets by using a common name for all kv secret's key. In our example we have used `secret`. This allows unification in handling responses from the vault server as the secret's value in the JSON object response will always be contained within `response.data.secret`.*
+*Tip: It is easier to manage your secrets by using a common name for all kv secret's key. In our example we have used `secret`. This allows unification in handling responses from the Vault server as the secret's value in the JSON object response will always be contained within `response.data.secret`.*
 
 ## Conclusion
 
