@@ -375,7 +375,7 @@ Output:
 Success! Enabled the kv secrets engine at: msec/
 ```
 
-*Tip: it is easier to manage paths by using the application name as the root path, and name sub-paths to define an application specific secret*
+*Tip: it is easier to manage paths by using the application name as the root path. Use sub-paths to define an application specific secret*
 
 
 ### Create secret
