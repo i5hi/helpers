@@ -47,13 +47,12 @@ api_key = request({
   url: 'http://127.0.0.1:8200/v1/msec/api_key',
   method: 'GET',
   headers: {
-      "X-Vault-Token":process.env.VAULT_TOKEN  
+      "X-Vault-Token":process.env.VAULT_TOKEN  // only a single env variable per application
   }
 }).data.secret;
 
 ```
 
-Now, the application environment only needs a *single* `VAULT_TOKEN` to gain access to only the secrets required for their application to run.
 
 
 ### Prerequisites
@@ -67,7 +66,7 @@ You will require *ONE* of the following to test this setup:
 - Local Debian/Ubuntu setup  
 
 
-If you are using Vagrant to test this setup, you will have to do the following to correctly forward ports to use the Vault UI on your host browser.
+If you are using Vagrant to test this setup, you must to do the following to correctly forward ports to use the Vault UI on your host browser.
 
 - use 0.0.0.0 instead of 127.0.0.1 in the vault.hcl file
 - use the Vagrantfile config provided below
