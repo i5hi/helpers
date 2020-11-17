@@ -39,7 +39,7 @@ Although the code can now be more freely shared, management of secrets is still 
 
 Vault is essentially an encrypted database, used just for secrets. It has a server/daemon component and a client component. The client can also use http endpoints to access the vault server.
 
-In our application, we can now access secrets at various http endpoints set by the admin
+In our application, we can now access secrets at various http endpoints set by the vault admin
 
 ```
 # Pseudo-code
@@ -468,7 +468,6 @@ policies             ["basic"]
 
 *policy* requires a policy name for which to create a token
 
-
 *no-default-policy* ensures that the token is only for the specified policy and not the *default* policy. 
 
 The default policy has additional permissions that we do not want to give our application; so ***REMEMBER*** to always add this flag!
@@ -477,11 +476,15 @@ The default policy has additional permissions that we do not want to give our ap
 *ttl* (time to live) sets the time for which this token will be valid. The default value is 765h,  which is also the maximum. 
 
 Expired tokens return a 403 Error, so keep in mind that your application will have to update its token within this timeframe to avoid downtime.
-  
+ 
 
 ## Test
 
-Finally, test vault's http client via ***curl***
+The *token* s.xxxxxxxxxxxxxxx-goK1VR can now be shared with a developer of the msec application.
+
+All secrets related to this application can easily be managed by the admin at the msec/* secret path.
+
+Finally, test the token using vault's http client via ***curl***
 
 *Change the X-Vault-Token value to the token you just created*
 
@@ -511,11 +514,7 @@ The output JSON contains a field ***data*** with the key:value pair, with **secr
  
 ## Conclusion
 
-Great! 
-
 In the next part we will cover Hashicorp's recommended hardening options.
-
-In the final part we will configure a HA cluster.
 
 ### Further steps
 
