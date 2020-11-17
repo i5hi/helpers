@@ -367,8 +367,6 @@ the path ```msec/``` will serve its secret at ```http://127.0.0.1:8200/v1/msec/`
 
 Enable the root path msec/ and declare it to be of type *kv*
 
-*Note: it is easier to manage paths by using the application name as the root path, and name sub-paths to define an application specific secret*
-
 ```
 $ vault secrets enable -path=msec/ kv
 ```
@@ -376,6 +374,8 @@ Output:
 ```
 Success! Enabled the kv secrets engine at: msec/
 ```
+
+*Tip: it is easier to manage paths by using the application name as the root path, and name sub-paths to define an application specific secret*
 
 
 ### Create secret
