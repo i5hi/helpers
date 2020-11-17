@@ -6,6 +6,8 @@ The following topics have been curated and presented in order of importance.
 
 ### Managing Unseal Keys & Admin Tokens
 
+### Auth Methods
+
 ### Single Tenancy
 
 ### End-to-End TLS
@@ -19,8 +21,6 @@ The following topics have been curated and presented in order of importance.
 ### Don't Run as Root
 
 ### Disable Swap
-
-### Auth Methods
 
 ### Turn Off Core Dumps
 
