@@ -2,11 +2,18 @@
 
 Part 2 takes a deeper dive into security concepts and hardening configurations based on recommendations from https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul.
 
+
 ## End-to-End TLS
 
 ## Single Tenancy
 
 ## Firewall traffic
+
+## Managing Unseal Keys
+
+## Avoid Root Tokens
+
+## Auth Methods
 
 ## Disable SSH / Remote Desktop
 
@@ -18,20 +25,16 @@ Part 2 takes a deeper dive into security concepts and hardening configurations b
 
 ## Immutable Upgrades
 
-## Avoid Root Tokens
-
 ## Enable Auditing
 
 ## Upgrade Frequently
 
-## Configure SELinux / AppArmor
+## Configure AppArmor
 
 ## Restrict Storage Access
 
 ## Disable Shell Command History
 
 ## Tweak ulimits
-
-## Docker Containers
 
 ## No Clear Text Credentials. 
