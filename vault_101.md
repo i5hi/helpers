@@ -2,7 +2,7 @@
 
 Part 1 covers basic setup and admin of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
 
-We will deploy a production grade Vault server with minimal security considerations to get started. In the next part, we will take a deeper dive into security concepts and add hardening configurations based on recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul```.
+We will deploy a production grade Vault server with minimal security considerations to get started. In the next part, we will take a deeper dive into security concepts and add hardening configurations based on recommendations from https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul.
 
 
 ## Introduction
