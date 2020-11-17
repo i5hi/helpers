@@ -111,7 +111,7 @@ Update apt and install vault
 $ sudo apt-get update && sudo apt-get install vault -y
 ```
 
-The installation creates a vault:vault user:group and generates self-signed TLS certificates which we will use when we run vault as a standalone service. 
+The installation creates a vault:vault user:group and generates self-signed TLS certificates which we will use in the next part covering security.
 
 Test the installation:
 
