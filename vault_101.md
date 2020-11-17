@@ -375,7 +375,7 @@ Output:
 Success! Enabled the kv secrets engine at: msec/
 ```
 
-*Tip: it is easier to manage paths by using the application name as the root path. Use sub-paths to define an application specific secret*
+*Tip: it is easier to manage paths by using the application name as the root path. Use sub-paths to define an application specific secret.*
 
 
 ### Create secret
@@ -520,6 +520,8 @@ Output:
 
 The output JSON contains a field ***data*** with the key:value pair, with **secret** as the key.
  
+*Tip: It is easier to manage your secrets by using a common name for all kv secret's key. In our example we have used `secret`. This allows unification in handling responses from the vault server as the secret's value in the JSON object response will always be contained within `response.data.secret`.*
+
 ## Conclusion
 
 In the next part we will cover Hashicorp's recommended hardening options.
@@ -532,10 +534,6 @@ http://127.0.0.1:8200/ui/
 ```
 
 All the steps covered in this tutorial can be done via the admin panel.
-
-#### Tips
-
-It is easier to manage your secrets by using the same name for the kv secret's *key*. In our example we have used `secret`. This allows unification in handling responses from the vault server as the secret's value in the JSON object response will always be contained within `response.data.secret`.
 
 ### References
 
