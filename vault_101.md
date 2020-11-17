@@ -47,7 +47,7 @@ api_key = request({
   url: 'http://127.0.0.1:8200/v1/msec/api_key',
   method: 'GET',
   headers: {
-      "X-Vault-Token":process.env.VAULT_TOKEN  // only a single env variable per application
+      "X-Vault-Token":process.env.VAULT_TOKEN  // only a single secret env variable per application
   }
 }).data.secret;
 
