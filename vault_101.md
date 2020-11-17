@@ -2,7 +2,7 @@
 
 Part 1 covers basic setup and admin of HashiCorp Vault on Debian 9/10 (and Ubuntu 18/19/20). 
 
-We will deploy a production grade vault with minimal security considerations to get started. In the next part, we will add hardening configurations and discuss all recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul``` for a production ready deployment.
+We will deploy a production grade vault with minimal security considerations to get started. In the next part, we will take a deeper dive into security concepts and add hardening configurations based on recommendations from ```https://learn.hashicorp.com/tutorials/vault/production-hardening?in=vault/day-one-consul```.
 
 
 ## Introduction
@@ -87,8 +87,6 @@ end
 ```
 
 ## Installation
-
-### Dependencies
 
 Debian will require a few dependencies to get started. These dependencies should already be present on Ubuntu.
 
@@ -301,13 +299,14 @@ Unseal Key 5: xxxxxxxxxxxxxxxxxxxxxxxxxx-OJ2roXUPd1k6D62jN
 Initial Root Token: s.xxxxxxxxxxxxxxxxxxxxxxxxxx-UM2fJ
 ```
 
-Vault starts off in a sealed state. In this state nothing can be accessed from vault. 
+Vault starts in a sealed state. In this state nothing can be accessed from vault. 
 
 3/5 Unseal Keys are required to unseal the vault. 
 
 Once the vault is unsealed, it remains in this state until a *seal* command is issued OR the server is restarted. 
 
-In the next part, we go into more detail on management of Unseal Keys and the Root Token. For now store these safely on your local machine.
+In the next part, we go into more detail on management of Unseal Keys and the Root Token. 
+For now store them safely on your local working machine.
 
 Begin the unseal process :
 ```
@@ -336,7 +335,7 @@ Now we can start using vault!
 
 ### Login
 
-Login to vault using the root token.
+Login to vault using the Root Token.
 
 ```
 $ vault login
@@ -346,16 +345,24 @@ $ vault login
 
 The *secrets* sub-command allows us to configure vault's secret engine.
 
-Vault allows you to create and tune various different types of secrets engines. 
+In Vault, a secret engine is simply a technique of managing and storing a specific type of secret. 
 
-We will be focussing only on the ***kv*** (key-value) secret engine, which stores a single *key=vaule* at a specific path.
+Our focus is on the general purpose ***kv*** (key-value) secret engine. 
+
+Like variables in a program, it stores data as a ***key=vaule*** pair
+
+Examples of kv
+```
+secret=pieshhh
+test=somethingelse
+rand=12903ikj12o3iljk213
+```
 
 Vault reads and writes secrets to paths, which can be accessed as http endpoints. 
 
 For example:
 
-the path ```msec/``` will serve a kv secret at ```http://127.0.0.1:8200/v1/msec/```
-
+the path ```msec/``` will serve its secret at ```http://127.0.0.1:8200/v1/msec/```
 
 Enable the root path msec/ and declare it to be of type *kv*
 
@@ -402,7 +409,7 @@ secret      FERobaedeDosOxpUXfTwyYq/7OxZB5
 
 ### Policies
 
-A policy in vault allows us to define access control to a secret path.
+A policy in Vault allows us to define access control to a secret path.
 
 So far we have performed all operations as the root user that we logged in as.
 
